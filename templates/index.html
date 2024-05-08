@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Train Info</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<style>
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .form-control:hover {
+        border-color: #999;
+    }
+    .form-control:focus {
+        outline: none;
+        border-color: #333;
+    }
+    /* Loading overlay styles */
+    #loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #ffffff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+    </head>
+    <body>
+     
+<div class="flex items-center justify-center h-screen">
+    
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md p-6" data-v0-t="card">
+        <form id="availabilityForm" method="post">
+      <div class="flex flex-col space-y-1 p-6" >
+        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Check Train Seat Availability</h3>
+        <p >Select train and time</p>
+      </div>
+     
+      <div class="p-6 space-y-4">
+        <div class="grid gap-2">
+            
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="participants"
+          >
+            Participants
+          </label>
+          <select class="js-select2" style="width: 100%; height: 20%;" name="train_number" required>
+            <option>Select Train</option>
+            <option value="771">RANGPUR EXPRESS (771)</option>
+            <option value="772">RANGPUR EXPRESS (772)</option>
+            <option value="793">PANCHAGARH EXPRESS (793)</option>
+            <option value="794">PANCHAGARH EXPRESS (794)</option>
+            <option value="705">EKOTA EXPRESS (705)</option>
+            <option value="706">EKOTA EXPRESS (706)</option>
+            <option value="727">RUPSHA EXPRESS (727)</option>
+            <option value="728">RUPSHA EXPRESS (728)</option>
+            <option value="769">DHUMKETU EXPRESS (769)</option>
+            <option value="770">DHUMKETU EXPRESS (770)</option>
+            <option value="747">SIMANTA EXPRESS (747)</option>
+            <option value="748">SIMANTA EXPRESS (748)</option>
+            <option value="783">TUNGIPARA EXPRESS (783)</option>
+            <option value="784">TUNGIPARA EXPRESS (784)</option>
+            <option value="759">PADMA EXPRESS (759)</option>
+            <option value="760">PADMA EXPRESS (760)</option>
+            <option value="753">SILKCITY EXPRESS (753)</option>
+            <option value="754">SILKCITY EXPRESS (754)</option>
+            <option value="733">TITUMIR EXPRESS (733)</option>
+            <option value="734">TITUMIR EXPRESS (734)</option>
+            <option value="775">SIRAJGANJ EXPRESS (775)</option>
+            <option value="776">SIRAJGANJ EXPRESS (776)</option>
+            <option value="751">LALMONI EXPRESS (751)</option>
+            <option value="752">LALMONI EXPRESS (752)</option>
+            <option value="797">KURIGRAM EXPRESS (797)</option>
+            <option value="755">MADHUMATI EXPRESS (755)</option>
+            <option value="798">KURIGRAM EXPRESS (798)</option>
+            <option value="756">MADHUMATI EXPRESS (756)</option>
+            <option value="731">BARENDRA EXPRESS (731)</option>
+            <option value="757">DRUTOJAN EXPRESS (757)</option>
+            <option value="758">DRUTOJAN EXPRESS (758)</option>
+            <option value="765">NILSAGAR EXPRESS (765)</option>
+            <option value="763">CHITRA EXPRESS (763)</option>
+            <option value="766">NILSAGAR EXPRESS (766)</option>
+            <option value="764">CHITRA EXPRESS (764)</option>
+            <option value="715">KAPOTAKSHA EXPRESS (715)</option>
+            <option value="716">KAPOTAKSHA EXPRESS (716)</option>
+            <option value="725">SUNDARBAN EXPRESS (725)</option>
+            <option value="726">SUNDARBAN EXPRESS (726)</option>
+            <option value="795">BENAPOLE EXPRESS (795)</option>
+            <option value="796">BENAPOLE EXPRESS (796)</option>
+            <option value="761">SAGARDARI EXPRESS (761)</option>
+            <option value="762">SAGARDARI EXPRESS (762)</option>
+            <option value="803">BANGLABANDHA EXPRESS (803)</option>
+            <option value="804">BANGLABANDHA EXPRESS (804)</option>
+            <option value="779">DHALARCHAR EXPRESS (779)</option>
+            <option value="780">DHALARCHAR EXPRESS (780)</option>
+            <option value="713">KOROTOA EXPRESS (713)</option>
+            <option value="714">KOROTOA EXPRESS (714)</option>
+            <option value="768">DOLONCHAPA EXPRESS (768)</option>
+            <option value="767">DOLONCHAPA EXPRESS (767)</option>
+            <option value="791">BANALATA EXPRESS (791)</option>
+            <option value="792">BANALATA EXPRESS (792)</option>
+            <option value="787">SONAR BANGLA EXPRESS (787)</option>
+            <option value="788">SONAR BANGLA EXPRESS (788)</option>
+            <option value="701">SUBORNO EXPRESS (701)</option>
+            <option value="702">SUBORNO EXPRESS (702)</option>
+            <option value="703">MAHANAGAR GODHULI (703)</option>
+            <option value="704">MAHANAGAR PROVATI (704)</option>
+            <option value="707">TISTA EXPRESS (707)</option>
+            <option value="708">TISTA EXPRESS (708)</option>
+            <option value="711">UPAKUL EXPRESS (711)</option>
+            <option value="712">UPAKUL EXPRESS (712)</option>
+            <option value="709">PARABAT EXPRESS (709)</option>
+            <option value="710">PARABAT EXPRESS (710)</option>
+            <option value="717">JAYENTIKA EXPRESS (717)</option>
+            <option value="718">JAYENTIKA EXPRESS (718)</option>
+            <option value="719">PAHARIKA EXPRESS (719)</option>
+            <option value="720">PAHARIKA EXPRESS (720)</option>
+            <option value="721">MOHANAGAR EXPRESS (721)</option>
+            <option value="722">MOHANAGAR EXPRESS (722)</option>
+            <option value="723">UDAYAN EXPRESS (723)</option>
+            <option value="724">UDAYAN EXPRESS (724)</option>
+            <option value="735">AGHNIBINA EXPRESS (735)</option>
+            <option value="736">AGHNIBINA EXPRESS (736)</option>
+            <option value="737">EGAROSINDHUR PROVATI (737)</option>
+            <option value="738">EGAROSINDHUR PROVATI (738)</option>
+            <option value="739">UPABAN EXPRESS (739)</option>
+            <option value="740">UPABAN EXPRESS (740)</option>
+            <option value="741">TURNA (741)</option>
+            <option value="742">TURNA (742)</option>
+            <option value="743">BHRAMMAPUTRA EXPRESS (743)</option>
+            <option value="744">BHRAMMAPUTRA EXPRESS (744)</option>
+            <option value="745">JAMUNA EXPRESS (745)</option>
+            <option value="746">JAMUNA EXPRESS (746)</option>
+            <option value="749">EGAROSINDHUR GODHULI (749)</option>
+            <option value="750">EGAROSINDHUR GODHULI (750)</option>
+            <option value="773">KALNI EXPRESS (773)</option>
+            <option value="774">KALNI EXPRESS (774)</option>
+            <option value="781">KISHORGANJ EXPRESS (781)</option>
+            <option value="782">KISHORGANJ EXPRESS (782)</option>
+            <option value="785">BIJOY EXPRESS (785)</option>
+            <option value="786">BIJOY EXPRESS (786)</option>
+            <option value="789">MOHONGANJ EXPRESS (789)</option>
+            <option value="790">MOHONGANJ EXPRESS (790)</option>
+            <option value="799">JAMALPUR EXPRESS (799)</option>
+            <option value="800">JAMALPUR EXPRESS (800)</option>
+            <option value="801">CHATTALA EXPRESS (801)</option>
+            <option value="802">CHATTALA EXPRESS (802)</option>
+            <option value="729">MEGHNA EXPRESS (729)</option>
+            <option value="730">MEGHNA EXPRESS (730)</option>
+            <option value="777">HAWR EXPRESS (777)</option>
+            <option value="778">HAWR EXPRESS (778)</option>
+            <option value="57">RAJSHAHI COMMUTER (57)</option>
+            <option value="58">RAJSHAHI COMMUTER (58)</option>
+            <option value="77">RAJSHAHI COMMUTER (77)</option>
+            <option value="78">RAJSHAHI COMMUTER (78)</option>
+            <option value="3107">MAITREE EXPRESS (3107)</option>
+            <option value="3110">MAITREE EXPRESS (3110)</option>
+            <option value="3130">BANDHAN EXPRESS (3130)</option>
+            <option value="3131">MITALI EXPRESS (3131)</option>
+            <option value="3132">MITALI EXPRESS (3132)</option>
+            <option value="3109">MAITREE EXPRESS (3109)</option>
+            <option value="3108">MAITREE EXPRESS (3108)</option>
+            <option value="3129">BANDHAN EXPRESS (3129)</option>
+            <option value="805">CHILAHATI EXPRESS (805)</option>
+            <option value="806">CHILAHATI EXPRESS (806)</option>
+            <option value="1001">NARAYANGANJ COMMUTER 1 (1001)</option>
+            <option value="1002">NARAYANGANJ COMMUTER 2 (1002)</option>
+            <option value="1003">NARAYANGANJ COMMUTER 3 (1003)</option>
+            <option value="1004">NARAYANGANJ COMMUTER 4 (1004)</option>
+            <option value="1005">NARAYANGANJ COMMUTER 5 (1005)</option>
+            <option value="1006">NARAYANGANJ COMMUTER 6 (1006)</option>
+            <option value="1007">NARAYANGANJ COMMUTER 7 (1007)</option>
+            <option value="1008">NARAYANGANJ COMMUTER 8 (1008)</option>
+            <option value="1009">NARAYANGANJ COMMUTER 9 (1009)</option>
+            <option value="1010">NARAYANGANJ COMMUTER 10 (1010)</option>
+            <option value="1011">NARAYANGANJ COMMUTER 11 (1011)</option>
+            <option value="1012">NARAYANGANJ COMMUTER 12 (1012)</option>
+            <option value="1013">NARAYANGANJ COMMUTER 13 (1013)</option>
+            <option value="1014">NARAYANGANJ COMMUTER 14 (1014)</option>
+            <option value="1015">NARAYANGANJ COMMUTER 15 (1015)</option>
+            <option value="1016">NARAYANGANJ COMMUTER 16 (1016)</option>
+            <option value="813">COXS BAZAR EXPRESS (813)</option>
+            <option value="814">COXS BAZAR EXPRESS (814)</option>
+            <option value="809">BURIMARI EXPRESS (809)</option>
+            <option value="810">BURIMARI EXPRESS (810)</option>
+            <option value="815">PARJOTAK EXPRESS (815)</option>
+            <option value="816">PARJOTAK EXPRESS (816)</option>
+            <option value="732">BARENDRA EXPRESS (732)</option>
+            <option value="003">COX SPL 3 (003)</option>
+            <option value="004">COX SPL 4 (004)</option>
+            <option value="121">CHANDANA COMMUTER (121)</option>
+            <option value="124">CHANDANA COMMUTER (124)</option>
+            <option value="123">BHANGA COMMUTER (123)</option>
+            <option value="122">BHANGA COMMUTER (122)</option>
+          </select>
+        </div>
+        <div class="grid gap-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="date"
+          >
+            Date
+          </label>
+          <input type="date" class="form-control" id="date_of_journey" name="date_of_journey" min="{{today}}" max="{{day5}}" required>
+        </div>
+      </div>
+      <div class="flex items-center p-6">
+        <button type="submit"
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-m font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-white hover:bg-gray-800 h-12 px-6"
+        style="width: auto; margin: 0 auto;">
+  Check Availability
+</button>
+
+      </div>
+    </form>
+    </div>
+  </div>
+
+  
+  <div id="loading-overlay" style="visibility: hidden;">
+    <div class="spinner"></div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('.js-select2').select2();
+            const hiddenElement = document.getElementById('loading-overlay');
+
+            $('#availabilityForm').submit(function(event) {
+          
+                hiddenElement.style.visibility = 'visible';
+
+                $('.btn-check-availability').prop('disabled', true);
+
+  
+                return true;
+            });
+        });
+    </script>
+</body>
