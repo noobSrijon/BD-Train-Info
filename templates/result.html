@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Train Info</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <style>
+            /* Custom styles for centering the card */
+            body {
+                
+                background-color: #f3f4f6;  
+            }
+        </style>
+    </head>
+<body>
+ 
+    <br>
+    <center>
+        <h1 style="font-size: 36px;">{{train_name}} Information</h1>
+    </center>
+    <hr>
+    <br>
+    
+    {% for station_details in train_data %}
+        {% for station, details in station_details[0].items() %}
+            
+            <div class="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
+                <div class="flex justify-between items-start">
+                    <h2 class="text-xl font-bold">{{ station }} by ({{train_name}})</h2>
+                    
+                </div>
+                <div class="grid grid-cols-3 gap-8 py-4 items-center">
+                    <div class="text-center">
+                        <div class="text-lg font-semibold">{{ station_details[1]['info']['depart'] }}</div>
+                        <div class="text-sm text-gray-500">{{origin_city}}</div>
+                    </div>
+                    <div class="border-t border-gray-200">
+                        <div class="text-xs text-center pt-2">{{ station_details[1]['info']['travel_time'] }}</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-lg font-semibold">{{ station_details[1]['info']['arrive'] }}</div>
+                        <div class="text-sm text-gray-500">{{ station }}</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    {% for train_type, info in details.items() %}
+                        <div class="bg-gray-100 p-3 rounded-md">
+                            <h3 class="text-lg font-bold mb-2">{{ train_type }}</h3>
+                            <p class="text-green-600 text-lg">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="mr-1"
+                                >
+                                    <circle cx="12" cy="12" r="8"></circle>
+                                    <line x1="3" x2="6" y1="3" y2="6"></line>
+                                    <line x1="21" x2="18" y1="3" y2="6"></line>
+                                    <line x1="3" x2="6" y1="21" y2="18"></line>
+                                    <line x1="21" x2="18" y1="21" y2="18"></line>
+                                </svg>
+                                Fare: {{ info['fare'] }} BDT
+                            </p>
+                            <p>Including VAT</p>
+                            <p class="text-sm my-2">Available Tickets (Counter + Online)</p>
+                            <p class="font-bold">{{ info['seat'] }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a target="_blank" href="{{ station_details[1]['info']['url'] }}" 
+                       class="inline-block w-full max-w-sm bg-black text-white py-3 rounded-md text-lg font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-opacity-90">
+                        BOOK Ticket <u>{{origin_city}}</u> to <u>{{station}}</u> Now
+                    </a>
+                </div>
+                
+            </div>
+            <br>
+        
+        {% endfor %}
+    {% endfor %}
+    
+
+</body>
+</html>
