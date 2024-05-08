@@ -1,0 +1,5 @@
+Flask==3.0.0
+gunicorn==21.2.0
+requests==2.31.0
+urllib3==1.26.6
+bcrypt==4.0.1
