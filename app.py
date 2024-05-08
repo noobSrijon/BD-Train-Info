@@ -17,57 +17,60 @@ def get_train_info(trains,trip_number):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-       
-        train_number = request.form['train_number']
-        date_of_journey = request.form['date_of_journey']
-        
-        date_of_journey= datetime.strptime(date_of_journey, '%Y-%m-%d').strftime('%d-%b-%Y')
+        try:
+            train_number = request.form['train_number']
+            date_of_journey = request.form['date_of_journey']
+            
+            date_of_journey= datetime.strptime(date_of_journey, '%Y-%m-%d').strftime('%d-%b-%Y')
 
-        train_name=gettrain(train_number)
-        if train_name==-1:
-            return 'Train Not Found'
-        payload = {
-            "model": train_number,
-            "departure_date_time": date_of_journey  
-        }
-        route_response = requests.post('https://railspaapi.shohoz.com/v1.0/web/train-routes', json=payload)
-        if route_response.status_code == 200:
-            routes_data = route_response.json()['data']['routes']
-            station_names = [route['city'] for route in routes_data]
+            train_name=gettrain(train_number)
+            if train_name==-1:
+                return 'Train Not Found'
+            payload = {
+                "model": train_number,
+                "departure_date_time": date_of_journey  
+            }
+            route_response = requests.post('https://railspaapi.shohoz.com/v1.0/web/train-routes', json=payload)
+            if route_response.status_code == 200:
+                routes_data = route_response.json()['data']['routes']
+                station_names = [route['city'] for route in routes_data]
 
-        
-            seat_availability = []
-            for i in range(len(station_names) - 1):
-                origin_city = station_names[0]
-                destination_city = station_names[i+1]
-                
-                availability_url ='https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city={}&to_city={}&date_of_journey={}&seat_class=S_CHAIR'.format(origin_city, destination_city,date_of_journey)
-                availability_response = requests.get(availability_url)
-                mainurl="https://eticket.railway.gov.bd/booking/train/search?fromcity={}&tocity={}&doj={}&class=S_CHAIR".format(origin_city, destination_city,date_of_journey)
-                if availability_response.status_code == 200:
-                    da=availability_response.json()
-                    trains = da['data']['trains']
-                    data=get_train_info(trains,train_name)
+            
+                seat_availability = []
+                for i in range(len(station_names) - 1):
+                    origin_city = station_names[0]
+                    destination_city = station_names[i+1]
                     
-                    seat_types = data["seat_types"]
-                    lis={}
-                    info={"travel_time":data["travel_time"],'depart': data["departure_date_time"],'arrive':data["arrival_date_time"],'url':mainurl}
-                    for i in seat_types:
-                        lis[i['type']]={'fare':i['fare'],'seat': i["seat_counts"]['offline']+i["seat_counts"]['online']}
+                    availability_url ='https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city={}&to_city={}&date_of_journey={}&seat_class=S_CHAIR'.format(origin_city, destination_city,date_of_journey)
+                    availability_response = requests.get(availability_url)
+                    mainurl="https://eticket.railway.gov.bd/booking/train/search?fromcity={}&tocity={}&doj={}&class=S_CHAIR".format(origin_city, destination_city,date_of_journey)
+                    if availability_response.status_code == 200:
+                        da=availability_response.json()
+                        trains = da['data']['trains']
+                        data=get_train_info(trains,train_name)
+                        
+                        seat_types = data["seat_types"]
+                        lis={}
+                        info={"travel_time":data["travel_time"],'depart': data["departure_date_time"],'arrive':data["arrival_date_time"],'url':mainurl}
+                        for i in seat_types:
+                            lis[i['type']]={'fare':i['fare'],'seat': i["seat_counts"]['offline']+i["seat_counts"]['online']}
 
-                    seat_availability.append([{destination_city:lis},{'info':info}])
-                    
-            #return seat_availability
-            return render_template('result.html',origin_city = station_names[0],train_name=train_name, station_names=station_names, train_data=seat_availability)
+                        seat_availability.append([{destination_city:lis},{'info':info}])
+                        
+                #return seat_availability
+                return render_template('result.html',origin_city = station_names[0],train_name=train_name, station_names=station_names, train_data=seat_availability)
+        except Exception as e:
+           
+            return '<h1>This train is not available on selected date</h1>'
     today = datetime.today()
 
     format_str = '%Y-%m-%d'
 
-    # Print today's date in the desired format
+
     today_formatted = today.strftime(format_str)
     five_days_after = today + timedelta(days=4)
 
-    # Print the date 5 days from now in the desired format
+  
     five_days_after_formatted = five_days_after.strftime(format_str)
     return render_template('index.html',today=today_formatted,day5=five_days_after_formatted)
 
